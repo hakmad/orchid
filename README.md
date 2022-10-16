@@ -1,4 +1,5 @@
 # orchid
+
 An interpreter for the WHILE programming language.
 
 ## Introduction
@@ -81,3 +82,63 @@ Note that the definition of natural numbers here includes 0.
 WHILE is untyped. As a result, 0, `False`, and empty lists are all equivalent.
 The impetus is therefore on the programmer to know what type they are working
 with and program accordingly.
+
+## Syntax and Structure
+
+WHILE programs consist of expressions, commands, and the program itself. These
+are detailed below.
+
+### Expressions
+
+Expressions are denoted by binary trees (as discussed previously). Besides the
+binary tree itself, there are 4 main kinds of expressions:
+
+- Variables
+- `nil`, representing the empty tree
+- `cons`, which constructs a tree from 2 subsequent expressions
+- `hd`, which returns the left subtree
+- `tl`, which returns the right subtree
+
+### Commands
+
+There are only 3 commands in WHILE:
+
+- Variable assignment
+- While loops
+- If statements
+	- Including if-else statements
+
+### Programs
+
+All programs in WHILE read only a single input and return only a single output.
+If multiple input/output parameters are required, then they must be encoded
+into a single binary tree. Each WHILE program also has a name associated with
+it.
+
+## BNF Grammar
+
+The following describes the BNF grammar for WHILE:
+
+```
+(block) 	::= {(stmt-list)}			// list of statements
+		| {}					// empty block
+
+(stmt-list)	::= (command)				// single command
+		| (command); (stmt-list)		// multiple commands
+
+(expression) 	::= ((expression))			// parentheses
+		| nil					// atom nil
+		| cons (expression) (expression)	// construct tree
+		| hd (expression)			// get left subtree
+		| tl (expression)			// get right subtree
+		| (variable)
+
+(command)	::= (variable) := (expression)		// assignment
+		| while (expression) (block)		// while loops
+		| if (expression) (block)		// if statements
+		| if (expression) (block) else (block)	// if-else statements
+
+(program)	::= (name) read (variable)		// general program
+		    (block)
+		    write (variable)
+```
